@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>HitmanClient</RootNamespace>
+    <AssemblyName>HitmanClient</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HitmanModel\HitmanModel.csproj" />
+  </ItemGroup>
+
+</Project>
