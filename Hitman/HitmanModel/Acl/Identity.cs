@@ -1,4 +1,4 @@
-﻿namespace HitmanService.Models.Acl
+﻿namespace HitmanModel.Acl
 {
     /// <summary>
     /// The fundamental element of the access control system.

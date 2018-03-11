@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HitmanModel.Storage;
-using HitmanService.Services;
+using HitmanService.Services.Storage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HitmanService.Controllers
@@ -9,7 +9,6 @@ namespace HitmanService.Controllers
     [Route("api/Store")]
     public class StoreController : Controller
     {
-        //private IStorageService _storageService;
         private IStorageService _storageService;
         public StoreController(IStorageService storageService)
         {

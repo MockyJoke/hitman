@@ -2,7 +2,7 @@
 using System.IO;
 using HitmanModel.Storage;
 
-namespace HitmanService.Services.Sql
+namespace HitmanService.Services.Storage.Sql
 {
     public class StorageObject : IStorageObject
     {

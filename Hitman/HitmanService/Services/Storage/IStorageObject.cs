@@ -1,7 +1,7 @@
 ﻿using HitmanModel.Storage;
 using System.IO;
 
-namespace HitmanService.Services
+namespace HitmanService.Services.Storage
 {
     public interface IStorageObject
     {

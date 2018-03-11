@@ -20,7 +20,7 @@ namespace HitmanClientTest
                 StringData = "Hello world!"
             };
             //IHitmanClient hitmanClient = new HitmanCoreClient(new HitmanCoreConfig() { Host="localhost:51195"});
-            IHitmanClient hitmanClient = new HitmanCoreClient(new HitmanCoreConfig() { Host = "hitmanservice.azurewebsites.net" });
+            IHitmanClient hitmanClient = new HitmanStorageClient(new HitmanStorageConfig() { Host = "hitmanservice.azurewebsites.net" });
             StorableIdentifier identifier = new StorableIdentifier()
             {
                 Category = "Test",

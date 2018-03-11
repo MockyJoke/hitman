@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HitmanServiceTest", "Hitman
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HitmanClient", "HitmanClient\HitmanClient.csproj", "{8B227CBC-FA5D-4E29-905B-133257FC0D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HitmanClientTest", "HitmanClientTest\HitmanClientTest.csproj", "{A6D7D35A-7ED8-4A4C-902C-B048B8510D13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HitmanClientTest", "HitmanClientTest\HitmanClientTest.csproj", "{A6D7D35A-7ED8-4A4C-902C-B048B8510D13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

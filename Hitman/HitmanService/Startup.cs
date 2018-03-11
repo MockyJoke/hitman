@@ -11,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using HitmanService.Data;
 using HitmanService.Models;
 using HitmanService.Services;
-using HitmanService.Services.Sql;
+using HitmanService.Services.Storage;
+using HitmanService.Services.Storage.Sql;
 
 namespace HitmanService
 {

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HitmanService.Models.Acl
+namespace HitmanModel.Acl
 {
-    public class AccessManager
+    public class InMemoryAccessManager : AceessManager
     {
         private Dictionary<String, AccessControlContainer> accessDict = new Dictionary<string, AccessControlContainer>();
-
-        public AccessControlContainer GetAccessControlContainer(IAccessControlResource resource)
+        public override AccessControlContainer GetAccessControlContainer(IAccessControlResource resource)
         {
             if (!accessDict.ContainsKey(resource.Identifier))
             {
@@ -16,7 +15,7 @@ namespace HitmanService.Models.Acl
             return accessDict[resource.Identifier];
         }
 
-        public void CreateAccessControlContainer(IAccessControlResource resource, Identity owner)
+        public override void CreateAccessControlContainer(IAccessControlResource resource, Identity owner)
         {
             if (accessDict.ContainsKey(resource.Identifier))
             {
@@ -25,19 +24,19 @@ namespace HitmanService.Models.Acl
             accessDict[resource.Identifier] = new AccessControlContainer(owner);
         }
 
-        public void AddEntry(IAccessControlResource resource, AccessControlEntry entry, User editor)
+        public override void AddEntry(IAccessControlResource resource, AccessControlEntry entry, User requester)
         {
-            EnsureCanEdit(resource, editor);
+            EnsureCanEdit(resource, requester);
             accessDict[resource.Identifier].Entries.Add(entry);
         }
 
-        public void DeleteEntry(IAccessControlResource resource, AccessControlEntry entry, User editor)
+        public override void DeleteEntry(IAccessControlResource resource, AccessControlEntry entry, User requester)
         {
-            EnsureCanEdit(resource, editor);
+            EnsureCanEdit(resource, requester);
             accessDict[resource.Identifier].Entries.Remove(entry);
         }
-
-        private void EnsureCanEdit(IAccessControlResource resource, User opertor) 
+      
+        private void EnsureCanEdit(IAccessControlResource resource, User opertor)
         {
             AccessControlContainer acc = GetAccessControlContainer(resource);
             if (!acc.Owner.HasDescendant(opertor))

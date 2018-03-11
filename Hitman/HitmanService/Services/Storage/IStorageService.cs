@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace HitmanService.Services
+namespace HitmanService.Services.Storage
 {
     public interface IStorageService
     {

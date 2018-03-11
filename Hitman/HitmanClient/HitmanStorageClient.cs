@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace HitmanClient
 {
-    public class HitmanCoreClient : IHitmanClient
+    public class HitmanStorageClient : IHitmanClient
     {
-        public HitmanCoreConfig Config { get; private set; }
+        public HitmanStorageConfig Config { get; private set; }
 
-        public HitmanCoreClient(HitmanCoreConfig config)
+        public HitmanStorageClient(HitmanStorageConfig config)
         {
             Config = config;
         }

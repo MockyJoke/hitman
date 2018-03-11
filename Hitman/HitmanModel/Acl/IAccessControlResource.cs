@@ -1,4 +1,4 @@
-﻿namespace HitmanService.Models.Acl
+﻿namespace HitmanModel.Acl
 {
     public interface IAccessControlResource
     {

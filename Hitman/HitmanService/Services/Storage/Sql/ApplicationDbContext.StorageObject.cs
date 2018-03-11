@@ -1,4 +1,4 @@
-﻿using HitmanService.Services.Sql;
+﻿using HitmanService.Services.Storage.Sql;
 using Microsoft.EntityFrameworkCore;
 
 namespace HitmanService.Data

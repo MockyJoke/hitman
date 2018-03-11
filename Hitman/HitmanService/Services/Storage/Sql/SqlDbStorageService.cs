@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HitmanService.Services.Sql
+namespace HitmanService.Services.Storage.Sql
 {
     public class SqlDbStorageService : IStorageService
     {

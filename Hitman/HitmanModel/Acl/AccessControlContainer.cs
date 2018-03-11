@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HitmanService.Models.Acl
+namespace HitmanModel.Acl
 {
     public class AccessControlContainer
     {

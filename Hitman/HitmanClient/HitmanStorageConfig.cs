@@ -1,6 +1,6 @@
 ﻿namespace HitmanClient
 {
-    public class HitmanCoreConfig
+    public class HitmanStorageConfig
     {
         public string Host { get; set; }
         public bool IsUnsecure { get; set; }
