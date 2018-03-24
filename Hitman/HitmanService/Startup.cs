@@ -13,6 +13,9 @@ using HitmanService.Models;
 using HitmanService.Services;
 using HitmanService.Services.Storage;
 using HitmanService.Services.Storage.Sql;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace HitmanService
 {
@@ -57,6 +60,11 @@ namespace HitmanService
 
             services.AddScoped<IStorageService>(provider => new SqlDbStorageService(provider.GetService<ApplicationDbContext>()));
 
+            // Retrieve storage account from connection string
+            //string azureStorageConnString = CloudConfigurationManager.GetSetting("AzureStorageConnection");
+            string azureStorageConnString = Configuration.GetConnectionString("AzureStorageConnection");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(azureStorageConnString);
+            services.AddScoped(provider => storageAccount.CreateCloudQueueClient());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
