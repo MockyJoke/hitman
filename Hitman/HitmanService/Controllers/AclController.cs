@@ -8,9 +8,9 @@ namespace HitmanService.Controllers
     public class AclController : Controller
     {
         [HttpGet("{category?}/{uniquename?}/{key?}")]
-        public async Task<IActionResult> Get(string identifier, string key)
+        public IActionResult Get(string identifier, string key)
         {
-            return null;
+            return Content("");
         }
     }
 }
