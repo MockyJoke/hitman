@@ -18,8 +18,10 @@ namespace HitmanService.Services.Queue.Azure
         {
             try
             {
+                // Only supports fifo queue
+                queueName = queueName.EndsWith(".fifo") ? queueName : queueName + ".fifo";
                 GetQueueUrlResponse getQueueUrlResponse = await _amazonSQSClient.GetQueueUrlAsync(queueName);
-                return new AWSQueue(_amazonSQSClient, getQueueUrlResponse.QueueUrl);
+                return new AWSQueue(_amazonSQSClient, getQueueUrlResponse.QueueUrl, true);
             }
             catch
             {

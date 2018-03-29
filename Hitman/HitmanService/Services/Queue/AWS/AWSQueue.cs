@@ -10,10 +10,13 @@ namespace HitmanService.Services.Queue.Azure
         private string _queueUrl;
         private AmazonSQSClient _amazonSQSClient;
 
-        public AWSQueue(AmazonSQSClient amazonSQSClient, string queueUrl)
+        private bool _isFIFO;
+
+        public AWSQueue(AmazonSQSClient amazonSQSClient, string queueUrl, bool isFifo)
         {
             _amazonSQSClient = amazonSQSClient;
             _queueUrl = queueUrl;
+            _isFIFO = isFifo;
         }
 
         public async Task<string> GetMessageAsync()
@@ -23,7 +26,8 @@ namespace HitmanService.Services.Queue.Azure
             ReceiveMessageResponse receiveMessageResponse = await _amazonSQSClient.ReceiveMessageAsync(receiveMessageRequest);
             Message message = receiveMessageResponse.Messages[0];
 
-            DeleteMessageRequest deleteMessageRequest = new DeleteMessageRequest(){
+            DeleteMessageRequest deleteMessageRequest = new DeleteMessageRequest()
+            {
                 QueueUrl = _queueUrl,
                 ReceiptHandle = message.ReceiptHandle
             };
@@ -36,9 +40,13 @@ namespace HitmanService.Services.Queue.Azure
         {
             SendMessageRequest sendMessageRequest = new SendMessageRequest();
             sendMessageRequest.QueueUrl = _queueUrl;
-            sendMessageRequest.MessageGroupId = _queueUrl;
-            sendMessageRequest.MessageDeduplicationId = DateTime.Now.Ticks.ToString();
+
             sendMessageRequest.MessageBody = message;
+            if (_isFIFO)
+            {
+                sendMessageRequest.MessageGroupId = _queueUrl;
+                sendMessageRequest.MessageDeduplicationId = DateTime.Now.Ticks.ToString();
+            }
             await _amazonSQSClient.SendMessageAsync(sendMessageRequest);
         }
     }
