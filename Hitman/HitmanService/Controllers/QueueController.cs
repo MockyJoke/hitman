@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using HitmanService.Services.Queue;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +25,9 @@ namespace HitmanService.Controllers
         [HttpGet("{queueName?}")]
         public async Task<IActionResult> Get(string queueName)
         {
-            IQueue queue = await _queueClient.GetQueueAsync(queueName);
             try
             {
+            IQueue queue = await _queueClient.GetQueueAsync(queueName);
                 if (queue == null)
                 {
                     return NotFound();
@@ -39,6 +41,41 @@ namespace HitmanService.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpPost("{queueName?}")]
+        public async Task<IActionResult> Post(string queueName)
+        {
+            try
+            {
+                IQueue queue = await _queueClient.GetQueueAsync(queueName);
+                if (queue == null)
+                {
+                    return NotFound();
+                }
+                string message = await GetRawBodyStringAsync(Request);
+                await queue.SendMessageAsync(message);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// Retrieve the raw body as a string from the Request.Body stream
+        /// </summary>
+        /// <param name="request">Request instance to apply to</param>
+        /// <param name="encoding">Optional - Encoding, defaults to UTF8</param>
+        /// <returns></returns>
+        public async Task<string> GetRawBodyStringAsync(HttpRequest request, Encoding encoding = null)
+        {
+            if (encoding == null)
+                encoding = Encoding.UTF8;
+
+            using (StreamReader reader = new StreamReader(request.Body, encoding))
+                return await reader.ReadToEndAsync();
         }
     }
 }

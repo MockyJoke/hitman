@@ -16,6 +16,11 @@ using HitmanService.Services.Storage.Sql;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage.Queue;
+using HitmanService.Services.Queue.Azure;
+using HitmanService.Services.Queue;
+using Amazon.SQS;
+using Amazon.Runtime.CredentialManagement;
+using Amazon;
 
 namespace HitmanService
 {
@@ -59,12 +64,8 @@ namespace HitmanService
             services.AddMvc();
 
             services.AddScoped<IStorageService>(provider => new SqlDbStorageService(provider.GetService<ApplicationDbContext>()));
-
-            // Retrieve storage account from connection string
-            //string azureStorageConnString = CloudConfigurationManager.GetSetting("AzureStorageConnection");
-            string azureStorageConnString = Configuration.GetConnectionString("AzureStorageConnection");
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(azureStorageConnString);
-            services.AddScoped(provider => storageAccount.CreateCloudQueueClient());
+            
+            services.AddScoped<IQueueClient>(provider => provideAzureQueue());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +94,22 @@ namespace HitmanService
             });
 
             DbInitializer.Initialize(dbContext);
+        }
+
+        private IQueueClient provideAzureQueue(){
+            string azureStorageConnString = Configuration.GetConnectionString("AzureStorageConnection");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(azureStorageConnString);
+            return new AzureQueueClient(storageAccount.CreateCloudQueueClient());
+        }
+
+        private IQueueClient provideAWSQueue(){
+            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
+            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
+            AmazonSQSConfig sqsConfig = new AmazonSQSConfig()
+            {
+                ServiceURL = Configuration["AWS:ServiceUrl"]
+            };
+            return new AWSQueueClient(new AmazonSQSClient(sqsConfig));
         }
     }
 }
