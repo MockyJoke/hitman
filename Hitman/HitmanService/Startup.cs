@@ -65,7 +65,7 @@ namespace HitmanService
 
             services.AddScoped<IStorageService>(provider => new SqlDbStorageService(provider.GetService<ApplicationDbContext>()));
             
-            services.AddScoped<IQueueClient>(provider => provideAzureQueue());
+            services.AddScoped<IQueueClient>(provider => provideAWSQueue());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,11 +103,11 @@ namespace HitmanService
         }
 
         private IQueueClient provideAWSQueue(){
-            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
-            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
+            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration.GetConnectionString("AWS_AccessKey"));
+            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration.GetConnectionString("AWS_SecretKey"));
             AmazonSQSConfig sqsConfig = new AmazonSQSConfig()
             {
-                ServiceURL = Configuration["AWS:ServiceUrl"]
+                ServiceURL = Configuration.GetConnectionString("AWS_SQSServiceUrl")
             };
             return new AWSQueueClient(new AmazonSQSClient(sqsConfig));
         }
