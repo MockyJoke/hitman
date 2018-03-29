@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HitmanService.Services.Queue;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.WindowsAzure.Storage.Queue;
@@ -12,28 +13,26 @@ namespace HitmanService.Controllers
     [Route("api/Queue")]
     public class QueueController : Controller
     {
-        private CloudQueueClient _cloudQueueClient;
+        private IQueueClient _queueClient;
 
-        public QueueController(CloudQueueClient cloudQueueClient)
+        public QueueController(IQueueClient queueClient)
         {
-            _cloudQueueClient = cloudQueueClient;
+            _queueClient = queueClient;
         }
 
         [HttpGet("{queueName?}")]
         public async Task<IActionResult> Get(string queueName)
         {
-            
-            CloudQueue cloudQueue = _cloudQueueClient.GetQueueReference(queueName);
+            IQueue queue = await _queueClient.GetQueueAsync(queueName);
             try
             {
-                if (!await cloudQueue.ExistsAsync())
+                if (queue == null)
                 {
                     return NotFound();
                 }
                 // Async dequeue the message
-                CloudQueueMessage retrievedMessage = await cloudQueue.GetMessageAsync();
-                IActionResult result = Content(retrievedMessage.AsString);
-                await cloudQueue.DeleteMessageAsync(retrievedMessage);
+                string retrievedMessage = await queue.GetMessageAsync();
+                IActionResult result = Content(retrievedMessage);
                 return result;
             }
             catch
