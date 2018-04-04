@@ -9,5 +9,7 @@ namespace HitmanService.Services.Storage
         Task SaveAsync(Stream dataStream, string metadata, StorableIdentifier identifier);
 
         Task<IStorageObject> LoadAsync(StorableIdentifier identifier);
+
+        Task DeleteAsync(StorableIdentifier identifier);
     }
 }

@@ -30,5 +30,12 @@ namespace HitmanService.Controllers
             await _storageService.SaveAsync(Request.Body, Request.Headers["Metadata"], identifier).ConfigureAwait(false);
             return new OkResult();
         }
+
+        [HttpDelete("{category?}/{uniquename?}/{key?}")]
+        public async Task<IActionResult> Delete(StorableIdentifier identifier, string key)
+        {
+            await _storageService.DeleteAsync(identifier).ConfigureAwait(false);
+            return new OkResult();
+        }
     }
 }

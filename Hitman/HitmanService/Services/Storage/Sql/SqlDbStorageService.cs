@@ -49,5 +49,15 @@ namespace HitmanService.Services.Storage.Sql
 
             return Task.FromResult(storageObject);
         }
+
+        public async Task DeleteAsync(StorableIdentifier identifier)
+        {
+            StorageObject storageObject = _context.StorageObjects.Where(so => so.Category == identifier.Category && so.UniqueName == identifier.UniqueName).FirstOrDefault();
+            if (storageObject != null)
+            {
+                _context.StorageObjects.Remove(storageObject);
+            }
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }
