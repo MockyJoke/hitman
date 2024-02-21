@@ -1,0 +1,10 @@
+FROM --platform=$BUILDPLATFORM golang:alpine AS build
+WORKDIR /app
+COPY app/* .
+RUN go build -o hitmango
+# CMD ["/bin/bash"]
+
+FROM alpine
+WORKDIR /app
+COPY --from=build /app/hitmango /app
+CMD ["/app/hitmango"]
